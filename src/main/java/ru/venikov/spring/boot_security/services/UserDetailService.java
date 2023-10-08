@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.venikov.spring.boot_security.models.User;
 import ru.venikov.spring.boot_security.repositories.UserRepository;
-import ru.venikov.spring.boot_security.security.OurUserDetails;
 
 import java.util.Optional;
 
@@ -30,6 +29,6 @@ public class UserDetailService implements UserDetailsService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new OurUserDetails(user.get());
+        return user.get();
     }
 }

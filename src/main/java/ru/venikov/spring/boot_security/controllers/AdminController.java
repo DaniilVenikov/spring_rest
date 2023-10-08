@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.venikov.spring.boot_security.dto.UserDTO;
 import ru.venikov.spring.boot_security.exceptions.UserNotCreatedException;
 import ru.venikov.spring.boot_security.exceptions.UserNotUpdatedException;
-import ru.venikov.spring.boot_security.models.Role;
 import ru.venikov.spring.boot_security.models.User;
 import ru.venikov.spring.boot_security.repositories.RoleRepository;
 import ru.venikov.spring.boot_security.services.RegistrationService;
@@ -22,33 +21,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/adminApi")
 public class AdminController {
 
     private final UserService userService;
     private final UserValidator userValidator;
     private final RegistrationService registrationService;
 
-    private final RoleRepository roleRepository;
-
     private final ModelMapper modelMapper;
 
 
     @Autowired
-    public AdminController(UserService userService, UserValidator userValidator, RegistrationService registrationService, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public AdminController(UserService userService, UserValidator userValidator, RegistrationService registrationService,
+                           ModelMapper modelMapper) {
         this.userService = userService;
         this.userValidator = userValidator;
         this.registrationService = registrationService;
-        this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
-    }
-
-    @GetMapping("/roles")
-    public ResponseEntity<List<Role>> getRoles() {
-        List<Role> roles = roleRepository.getRolesBy().stream().toList();
-        return !roles.isEmpty()
-                ? new ResponseEntity<>(roles, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/users")

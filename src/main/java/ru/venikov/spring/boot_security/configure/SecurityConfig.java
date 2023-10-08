@@ -6,15 +6,12 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.venikov.spring.boot_security.services.UserDetailService;
 
-@Order(value = Ordered.HIGHEST_PRECEDENCE)
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailService userDetailService;
@@ -29,22 +26,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/login", "/registration", "/error").permitAll()
+                .antMatchers("/admin/**", "/adminApi/**").hasRole("ADMIN")
+                .antMatchers("/login", "/error").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin().loginPage("/login")
                 .successHandler(successHandler)
-                .loginProcessingUrl("/login")
-                .usernameParameter("name")
-                .passwordParameter("password")
+                .loginProcessingUrl("/process_login")
                 .failureUrl("/login?error")
                 .and()
                 .logout().logoutUrl("/logout")
                 .logoutSuccessUrl("/login");
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder managerBuilder) throws Exception {
         managerBuilder
