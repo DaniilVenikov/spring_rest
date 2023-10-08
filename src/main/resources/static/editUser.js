@@ -16,7 +16,7 @@ function editUser() {
                 role: "ROLE_" + formEdit.roles.options[i].text
             });
         }
-        fetch("adminApi/user/" + formEdit.id.value, {
+        fetch("adminApi/users/" + formEdit.id.value, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

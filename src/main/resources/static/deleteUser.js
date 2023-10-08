@@ -19,7 +19,7 @@ async function deleteModal(id) {
 function deleteUser() {
     deleteForm.addEventListener("submit", ev => {
         ev.preventDefault();
-        fetch("adminApi/user/" + deleteForm.id.value, {
+        fetch("adminApi/users/" + deleteForm.id.value, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

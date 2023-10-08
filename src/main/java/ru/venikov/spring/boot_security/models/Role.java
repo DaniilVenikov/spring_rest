@@ -1,5 +1,6 @@
 package ru.venikov.spring.boot_security.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -21,6 +22,7 @@ public class Role implements GrantedAuthority {
 
     }
 
+    @JsonIgnore
     @Override
     public String getAuthority() {
         return name;
